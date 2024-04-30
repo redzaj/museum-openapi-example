@@ -13,6 +13,25 @@ info:
 servers:
   - url: "https://api.fake-museum-example.com/v1.1"
 paths:
+  /visitors:
+    get:
+      summary: Get all visitors
+      description: Get all visitors
+      operationId: getVisitors
+      tags: 
+        - Visitors
+      parameters:
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+        - $ref: "#/components/parameters/PaginationPage"
+        - $ref: "#/components/parameters/PaginationLimit"
+      responses:
+        "200":
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetVisitorsResponse'
   /museum-hours:
     get:
       summary: Get museum hours
@@ -305,6 +324,31 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/MuseumDailyHours"
+    GetVisitorsResponse:
+      description: List of museum visitors.
+      type: array
+      items:
+        $ref: "#/components/schemas/Visitor"
+    Visitor:
+      description: Person who visit museum at least once.
+      type: object
+      properties: 
+        email:
+          description: Email of the visitor
+          type: string
+          example: john.doe@innovario.com
+        firstName:
+          description: First name of visitor
+          type: string
+          example: John
+        lastName:
+          description: Last name of visitor
+          type: string
+          example: Doe
+      required:
+        - email
+        - firstName
+        - lastName
     MuseumDailyHours:
       description: Daily operating hours for the museum.
       type: object
@@ -705,6 +749,8 @@ components:
 tags:
   - name: Operations
     description: Operational information about the museum.
+  - name: Visitors
+    description: Information about visitors.
   - name: Events
     description: Special events hosted by the museum.
   - name: Tickets
